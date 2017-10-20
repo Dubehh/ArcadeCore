@@ -62,6 +62,7 @@ public class UItem {
 	public ItemStack toItem(){
 		this._meta.setLore(_lore);
 		this._meta.setUnbreakable(true);
+		this._item.setItemMeta(_meta);
 		return _item;
 	}
 	

@@ -2,7 +2,7 @@ package nl.dubehh;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import nl.dubehh.core.module.ModuleController;
+import nl.dubehh.core.game.GameManager;
 
 public class Main extends JavaPlugin{
 
@@ -10,10 +10,7 @@ public class Main extends JavaPlugin{
 	
 	public void onEnable(){
 		_instance = this;
-		if(!getDataFolder().exists()) 
-			getDataFolder().mkdir();
-		ModuleController.getInstance().initialize();
-		ModuleController.getInstance().launch("TestModule");
+		GameManager.getInstance().getModuleController().initialize();
 	}
 	
 	public static Main getInstance() {

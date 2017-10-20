@@ -3,6 +3,7 @@ package nl.dubehh.core.module;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import nl.dubehh.command.AbstractSubCommand;
+import nl.dubehh.core.game.GameManager;
 
 public abstract class Module extends JavaPlugin{
 	
@@ -42,6 +43,12 @@ public abstract class Module extends JavaPlugin{
 	
 	protected void addCommand(String alias, AbstractSubCommand cmd){
 		this._command.register(alias, cmd);
+	}
+	
+	public void requestEnd(){
+		GameManager.getInstance()
+			.getModuleController()
+			.end(this);
 	}
 	
 	protected void setAlias(String alias){

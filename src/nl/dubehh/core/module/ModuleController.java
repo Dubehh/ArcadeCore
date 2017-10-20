@@ -15,13 +15,12 @@ import nl.dubehh.Main;
 public class ModuleController {
 	
 	private final String MODULE_FOLDER = "modules";
-	private static ModuleController _instance;
 	
 	private File _folder;
 	private Module _current;
 	private HashSet<Module> _modules;
 	
-	private ModuleController(){
+	public ModuleController(){
 		this._current = null;
 		this._modules = new HashSet<>();
 		this._folder = new File(Main.getInstance().getDataFolder().getAbsolutePath()+File.separator+MODULE_FOLDER);
@@ -30,7 +29,7 @@ public class ModuleController {
 	public void initialize(){
 		if(!this._folder.exists()){
 			this._folder.mkdir();
-			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED+"Module folder empty, creating the folder for you.");
+			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.YELLOW+"Module folder empty, creating the folder for you.");
 			return;
 		}
 		File[] modules = _folder.listFiles();
@@ -53,10 +52,15 @@ public class ModuleController {
 		return this._current;
 	}
 	
-	public static ModuleController getInstance(){
-		if(_instance == null)
-			_instance = new ModuleController();
-		return _instance;
+	public HashSet<Module> list(){
+		return this._modules;
+	}
+	
+	public void end(Plugin plugin){
+		if(this._modules.contains(plugin)){
+			Main.getInstance().getPluginLoader().disablePlugin(plugin);
+			this._current = null;
+		}
 	}
 	
 	public void launch(String name){

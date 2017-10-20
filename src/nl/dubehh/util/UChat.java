@@ -7,6 +7,7 @@ public enum UChat {
 
 	ERROR(ChatColor.DARK_GRAY+"["+ChatColor.RED+ChatColor.BOLD+"!"+ChatColor.DARK_GRAY+"] "+ChatColor.GRAY.toString()),
 	NOTIFY(ChatColor.DARK_GRAY+"["+ChatColor.AQUA+ChatColor.BOLD+"-"+ChatColor.DARK_GRAY+"] "+ChatColor.GRAY.toString()),
+	CLEAN(ChatColor.GRAY.toString()),
 	INFO_UNIMPORTANT(ChatColor.DARK_GRAY+"["+ChatColor.GRAY+ChatColor.BOLD+"-"+ChatColor.DARK_GRAY+"] "+ChatColor.GRAY.toString());
 	
 	private final String _prefix;
