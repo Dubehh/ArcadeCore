@@ -10,6 +10,7 @@ public class DatabaseConnectionProperties {
 	public enum DatabaseProperty {
 		USERNAME("root"),
 		PASSWORD("usbw"),
+		DATABASE("arcade"),
 		IP("localhost"),
 		PORT("3307");
 		
