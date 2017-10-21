@@ -1,4 +1,4 @@
-package nl.dubehh.core.module;
+package nl.dubehh.core.module.construction;
 
 public interface IModuleCommandHandler {
 

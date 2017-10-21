@@ -1,7 +1,9 @@
 package nl.dubehh.core.module;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,6 +13,9 @@ import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.UnknownDependencyException;
 
 import nl.dubehh.Main;
+import nl.dubehh.core.data.database.request.DatabaseTransactionRequest;
+import nl.dubehh.core.data.database.table.Table;
+import nl.dubehh.core.module.construction.IModuleDataSource;
 
 public class ModuleController {
 	
@@ -46,7 +51,23 @@ public class ModuleController {
 				continue;
 			}
 		}
+		constructDataSources();
 	}
+	
+	private void constructDataSources(){
+		List<String> transaction = new ArrayList<>();
+		this._modules.forEach((module)->{
+			if(module instanceof IModuleDataSource){
+				Table table  = ((IModuleDataSource) module).intializeDatabaseTable();
+				module.setTable(table);
+				transaction.add(table.creation());
+			}	
+		});
+		new DatabaseTransactionRequest(() -> {
+			Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Database tables initialized");
+		} , transaction);
+	}
+	
 	
 	public Module getCurrent(){
 		return this._current;

@@ -10,7 +10,7 @@ import nl.dubehh.util.UChat;
 
 public class ArcadeModulesCommand extends AbstractSubCommand{
 
-	public ArcadeModulesCommand(int minArgs, String permission, String usage, String desc) {
+	public ArcadeModulesCommand() {
 		super(1, "arcade.admin.list", "/arcade modules", "Lists all modules");
 	}
 
@@ -19,7 +19,7 @@ public class ArcadeModulesCommand extends AbstractSubCommand{
 		UChat.INFO_UNIMPORTANT.send(p, "Showing all modules:");
 		GameManager.getInstance().getModuleController().list().forEach((module) -> {
 			boolean enabled = (boolean) module.getModuleConfig().getSetting(ModuleSetting.ENABLED);
-			UChat.CLEAN.send(p, " - "+ChatColor.WHITE+module.getAlias()+ChatColor.GRAY+" > "+(enabled ? ChatColor.GREEN +"ENABLED" : ChatColor.RED+"DISABLED"));
+			UChat.CLEAN.send(p, " - "+ChatColor.WHITE+module.getAlias()+ChatColor.GRAY+" > "+(enabled ? ChatColor.GREEN +"Enabled" : ChatColor.RED+"Disabled"));
 		});
 	}
 	

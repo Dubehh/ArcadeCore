@@ -2,7 +2,7 @@ package nl.dubehh.command.core;
 
 import nl.dubehh.command.AbstractGroupCommand;
 
-public class ArcadeCmd extends AbstractGroupCommand{
+public class ArcadeCmd extends AbstractGroupCommand {
 
 	public ArcadeCmd(String command, String perm, String usage) {
 		super("arcade", "arcade.admin", "/arcade <args>");
@@ -11,6 +11,8 @@ public class ArcadeCmd extends AbstractGroupCommand{
 
 	@Override
 	public void registerCommands() {
+		register("setspawn", new ArcadeSpawnCommand());
+		register("modules", new ArcadeModulesCommand());
 	}
 
 }

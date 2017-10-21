@@ -1,8 +1,11 @@
 package nl.dubehh;
 
+import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import nl.dubehh.core.game.GameManager;
+import nl.dubehh.event.*;
 
 public class Main extends JavaPlugin{
 
@@ -11,10 +14,17 @@ public class Main extends JavaPlugin{
 	public void onEnable(){
 		_instance = this;
 		GameManager.getInstance().getModuleController().initialize();
+		initEvents();
 	}
 	
 	public static Main getInstance() {
 		return _instance;
+	}
+	
+	private void initEvents(){
+		for(Listener l : new Listener[]{
+			new ConnectEvent()
+		}){ Bukkit.getPluginManager().registerEvents(l, this);}
 	}
 	
 }
