@@ -7,6 +7,7 @@ import nl.dubehh.Main;
 
 public class GameTimer {
 
+	private boolean _running;
 	private int _delay, _time;
 	private ITimerEnd _callback;
 	private ITimerTick _tickEvent;
@@ -16,6 +17,7 @@ public class GameTimer {
 		this._time = time;
 		this._delay = delay;
 		this._callback = null;
+		this._running = false;
 		this._tickEvent = null;
 	}
 	
@@ -23,27 +25,35 @@ public class GameTimer {
 		return this._time;
 	}
 	
-	public void setTimerEndEvent(ITimerEnd callback){
+	public GameTimer setTimerEndEvent(ITimerEnd callback){
 		this._callback = callback;
+		return this;
 	}
 	
-	public void setTimerTickEvent(ITimerTick tick){
+	public GameTimer setTimerTickEvent(ITimerTick tick){
 		this._tickEvent = tick;
+		return this;
 	}
 	
 	public void start(){
+		this._running = true;
 		this._task = Bukkit.getScheduler().runTaskTimer(Main.getInstance(), ()->{
 			if(this._time > 0){
 				if(_tickEvent != null)
 					_tickEvent.onTick(_time);
 				this._time--;
 			}else cancel(true);
-		}, this._delay, 20);
+		}, this._delay*20, 20);
 	}
 	
 	public void cancel(boolean useCallback){
 		this._task.cancel();
+		this._running = false;
 		if(useCallback && this._callback != null)
 			this._callback.onEnd();
+	}
+
+	public boolean isRunning() {
+		return _running;
 	}
 }

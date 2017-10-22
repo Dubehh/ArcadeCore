@@ -8,13 +8,13 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.InvalidPluginException;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.UnknownDependencyException;
 
 import nl.dubehh.Main;
 import nl.dubehh.core.data.database.request.DatabaseTransactionRequest;
 import nl.dubehh.core.data.database.table.Table;
+import nl.dubehh.core.game.GameManager;
 import nl.dubehh.core.module.construction.IModuleDataSource;
 
 public class ModuleController {
@@ -24,9 +24,11 @@ public class ModuleController {
 	private File _folder;
 	private Module _current;
 	private HashSet<Module> _modules;
+	private GameManager _game;
 	
-	public ModuleController(){
+	public ModuleController(GameManager manager){
 		this._current = null;
+		this._game = manager;
 		this._modules = new HashSet<>();
 		this._folder = new File(Main.getInstance().getDataFolder().getAbsolutePath()+File.separator+MODULE_FOLDER);
 	}
@@ -52,6 +54,8 @@ public class ModuleController {
 			}
 		}
 		constructDataSources();
+		_game.loadQueue();
+		
 	}
 	
 	private void constructDataSources(){
@@ -73,23 +77,27 @@ public class ModuleController {
 		return this._current;
 	}
 	
-	public HashSet<Module> list(){
+	public HashSet<Module> getModules(){
 		return this._modules;
 	}
 	
-	public void end(Plugin plugin){
-		if(this._modules.contains(plugin)){
-			Main.getInstance().getPluginLoader().disablePlugin(plugin);
+	public void unload(Module module){
+		if(this._modules.contains(module)){
+			Main.getInstance().getPluginLoader().disablePlugin(module);
 			this._current = null;
 		}
 	}
-	
-	public void launch(String name){
-		Plugin module = _modules.stream()
-				.filter(m-> m.getName().equalsIgnoreCase(name))
-				.findFirst()
-				.get();
+
+	public boolean load(Module module){
+		if(module==null) return false;
+		this._current = module;
 		Main.getInstance().getPluginLoader().enablePlugin(module);
+		return true;
 	}
 	
+	public Module fetch(String name){
+		return _modules.stream()
+				.filter(m-> m.getName().equalsIgnoreCase(name))
+				.findFirst().orElse(null);
+	}
 }

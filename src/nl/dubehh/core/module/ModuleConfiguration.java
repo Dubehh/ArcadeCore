@@ -53,6 +53,13 @@ public class ModuleConfiguration {
 	}
 	
 	/**
+	 * Returns the raw config instance
+	 */
+	public DataFile getRawConfig(){
+		return this._file;
+	}
+	
+	/**
 	 * Sets the setting (even if it already exists) to the desired value
 	 * @param setting ModuleSetting
 	 * @param value Object

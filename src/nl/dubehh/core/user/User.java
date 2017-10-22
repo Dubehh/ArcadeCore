@@ -8,6 +8,7 @@ import nl.dubehh.core.module.Module;
 
 public class User {
 	
+	private boolean _ingame, _queued;
 	private UserDataController _data;
 	private Player _player;
 	
@@ -27,8 +28,24 @@ public class User {
 		this._data = new UserDataController(this, module);
 	}
 	
+	public boolean isIngame(){
+		return this._ingame;
+	}
+	
+	public void setIngame(boolean ingame){
+		this._ingame = ingame;
+	}
+	
+	public void setQueued(boolean queued){
+		this._queued = queued;
+	}
+	
 	public UserDataController getDataController(){
 		return this._data;
+	}
+
+	public boolean isQueued() {
+		return _queued;
 	}
 	
 }

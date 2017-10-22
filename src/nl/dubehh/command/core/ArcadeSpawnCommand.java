@@ -3,7 +3,7 @@ package nl.dubehh.command.core;
 import org.bukkit.entity.Player;
 
 import nl.dubehh.command.AbstractSubCommand;
-import nl.dubehh.core.data.DataFile;
+import nl.dubehh.core.game.GameManager;
 import nl.dubehh.util.UChat;
 import nl.dubehh.util.UConfig;
 
@@ -16,7 +16,7 @@ public class ArcadeSpawnCommand extends AbstractSubCommand {
 	@Override
 	public void onCommand(Player p, String[] args) {
 		UChat.NOTIFY.send(p, "Main spawn set at your current location!");
-		new DataFile("settings").set("spawn", UConfig.serialize(p.getLocation()));
+		GameManager.getInstance().getSettings().set("spawn", UConfig.serialize(p.getLocation()));
 	}
 
 }

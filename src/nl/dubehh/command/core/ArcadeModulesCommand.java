@@ -17,7 +17,7 @@ public class ArcadeModulesCommand extends AbstractSubCommand{
 	@Override
 	public void onCommand(Player p, String[] args) {
 		UChat.INFO_UNIMPORTANT.send(p, "Showing all modules:");
-		GameManager.getInstance().getModuleController().list().forEach((module) -> {
+		GameManager.getInstance().getModuleController().getModules().forEach((module) -> {
 			boolean enabled = (boolean) module.getModuleConfig().getSetting(ModuleSetting.ENABLED);
 			UChat.CLEAN.send(p, " - "+ChatColor.WHITE+module.getAlias()+ChatColor.GRAY+" > "+(enabled ? ChatColor.GREEN +"Enabled" : ChatColor.RED+"Disabled"));
 		});

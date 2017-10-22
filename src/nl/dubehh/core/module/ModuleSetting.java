@@ -3,6 +3,7 @@ package nl.dubehh.core.module;
 public enum ModuleSetting {
 	
 	MIN_PLAYERS(2),
+	MAX_PLAYERS(-1),
 	TELEPORT_ON_START(true),
 	TELEPORT_LOCATION(null),
 	ENABLED(true);

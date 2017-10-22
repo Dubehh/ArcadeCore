@@ -6,7 +6,6 @@ import nl.dubehh.command.AbstractSubCommand;
 import nl.dubehh.core.data.database.table.Table;
 import nl.dubehh.core.game.GameManager;
 import nl.dubehh.core.module.construction.IModuleCommandHandler;
-import nl.dubehh.core.user.User;
 
 public abstract class Module extends JavaPlugin{
 	
@@ -18,29 +17,26 @@ public abstract class Module extends JavaPlugin{
 	/**
 	 * Fired when the module is loaded as a game
 	 */
-	public abstract void onStart();
+	public abstract void onLoad();
 	/**
 	 * Fired when the module is ended
 	 */
-	public abstract void onEnd();
+	public abstract void onUnload();
 	
-	/**
-	 * Fired when a new user joins the module
-	 * @param user User
-	 */
-	public abstract void onUserJoin(User user);
+	public abstract void onGameStart();
+	
 	
 	public void initialize(){
 		this._alias = this.getName();
 		this._command = new ModuleCommandHandler(this);
+		this._config = new ModuleConfiguration(this);
 		if(this instanceof IModuleCommandHandler)
 			((IModuleCommandHandler) this).registerCommands();
 		this._command.register();
 	}
 	
 	public void onEnable(){
-		this._config = new ModuleConfiguration(this);
-		this.onStart();
+		this.onLoad();
 	}
 	
 	public void setTable(Table table){
@@ -48,7 +44,7 @@ public abstract class Module extends JavaPlugin{
 	}
 	
 	public void onDisable(){
-		this.onEnd();
+		this.onUnload();
 	}
 	
 	public Table getDataTable(){
@@ -59,17 +55,15 @@ public abstract class Module extends JavaPlugin{
 		return this._config;
 	}
 	
-	protected void addCommand(String alias, AbstractSubCommand cmd){
+	public void addCommand(String alias, AbstractSubCommand cmd){
 		this._command.register(alias, cmd);
 	}
 	
 	public void requestEnd(){
-		GameManager.getInstance()
-			.getModuleController()
-			.end(this);
+		GameManager.getInstance().prepareEnd();
 	}
 	
-	protected void setAlias(String alias){
+	public void setAlias(String alias){
 		this._alias = alias;
 	}
 

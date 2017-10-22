@@ -4,8 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import nl.dubehh.command.core.ArcadeCommand;
 import nl.dubehh.core.game.GameManager;
-import nl.dubehh.event.*;
+import nl.dubehh.event.ConnectEvent;
 
 public class Main extends JavaPlugin{
 
@@ -14,6 +15,7 @@ public class Main extends JavaPlugin{
 	public void onEnable(){
 		_instance = this;
 		GameManager.getInstance().getModuleController().initialize();
+		new ArcadeCommand().register();
 		initEvents();
 	}
 	

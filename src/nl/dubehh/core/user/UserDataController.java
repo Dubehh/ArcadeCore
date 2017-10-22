@@ -9,6 +9,7 @@ import nl.dubehh.core.data.database.request.DatabaseFetchRequest;
 import nl.dubehh.core.data.database.request.DatabaseUpdateRequest;
 import nl.dubehh.core.data.database.table.TableColumn;
 import nl.dubehh.core.module.Module;
+import nl.dubehh.core.module.construction.IModuleDataSource;
 
 public class UserDataController {
 	
@@ -22,7 +23,11 @@ public class UserDataController {
 		this._data = new HashMap<>();
 	}
 	
-	public void load(){
+	public void load(Runnable callback){
+		if(!isDataSource()){
+			callback.run();
+			return;
+		}
 		new DatabaseUpdateRequest(this._module.getDataTable().registration(this._user), ()->{
 			String query = "SELECT * FROM "+this._module.getDataTable().getName()+" WHERE uuid = '"+_user.getUUID()+"'";
 			new DatabaseFetchRequest(query, (set) -> {
@@ -30,14 +35,18 @@ public class UserDataController {
 					if(!set.next()) return;
 					for(TableColumn column : _module.getDataTable().getColumns())
 						_data.put(column.getName(), set.getObject(column.getName()));
-					_module.onUserJoin(_user);
+					callback.run();
 				} catch (Exception e) {
 					Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"Failed to load data! "
 							+"; module "+_module.getName()
 						    +"; player: "+_user.getPlayer().getName());
 				}
-			});
-		});
+			}).query();
+		}).query();
+	}
+	
+	public boolean isDataSource(){
+		return this._module instanceof IModuleDataSource;
 	}
 	
 	public void save(){ 
@@ -45,6 +54,11 @@ public class UserDataController {
 	}
 	
 	public void save(Runnable callback){
+		if(!isDataSource()){ 
+			if(callback !=null)
+				callback.run();
+			return;
+		}
 		StringBuilder query = new StringBuilder();
 		_data.forEach((k, v) -> {
 			query.append(", ")

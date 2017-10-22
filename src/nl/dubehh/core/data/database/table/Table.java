@@ -20,7 +20,7 @@ public class Table {
 		this._registration = new HashMap<>();
 	}
 	
-	protected void registerColumn(TableColumn... c){
+	public void registerColumn(TableColumn... c){
 		for(TableColumn column : c)
 			this.registerColumn(column);
 	}
@@ -29,13 +29,13 @@ public class Table {
 		return this._columns;
 	}
 	
-	protected void registerColumn(TableColumn c){
+	private void registerColumn(TableColumn c){
 		this._columns.add(c);
 		if(c.isPrimary())
 			this._primaryKey=c;
 	}
 	
-	protected void setDefault(TableColumn c, String value){
+	public void setDefault(TableColumn c, String value){
 		_registration.put(c, value);
 	}
 	
